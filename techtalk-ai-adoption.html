@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentation: Adapting to Rapid Change in Software Development</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: "Godel Corporate" - A professional palette inspired by the provided image. It uses a deep slate/blue background (bg-slate-900), white/light-gray text (text-slate-100), and a striking golden-yellow accent (bg-amber-500) for interactive elements and highlights. -->
+    <!-- Application Structure Plan: The SPA is structured as a linear slide deck. The core UI is a main content area that displays one "slide" at a time. Navigation is handled by "Previous" and "Next" buttons, with a progress bar at the bottom to orient the audience. This structure was chosen to directly support a live presentation, providing a clear, step-by-step flow for the audience to follow. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Title -> Goal: Inform -> Viz/Method: Title Slide with CSS graphic -> Interaction: Static -> Justification: Creates a strong, branded opening.
+        - Report Info: The Hook -> Goal: Engage -> Viz/Method: Full-screen Text Slide with subtle icon -> Interaction: Static -> Justification: Focuses audience attention on a single, relatable question.
+        - Report Info: Core Concepts -> Goal: Inform/Explain -> Viz/Method: Series of individual slides with diagrams, icons, and charts -> Interaction: Chart hover -> Justification: Breaks down complex ideas into digestible visual chunks (flow diagram, bar chart) to maintain clarity and pace.
+        - Report Info: The Zinger -> Goal: Provoke Thought -> Viz/Method: High-impact text slide with icon -> Interaction: Static -> Justification: Presents the controversial idea with minimal distraction to maximize its impact.
+        - Report Info: Discussion Starters -> Goal: Transition to Discussion -> Viz/Method: Bulleted List Slide with icons -> Interaction: Static -> Justification: Clearly signals the end of the presentation and provides concrete prompts for the audience discussion.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .slide {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+        .slide.active {
+            display: flex;
+            opacity: 1;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 60vh;
+            max-height: 500px;
+        }
+        /* Enhanced Title Slide Background */
+        #title-slide-graphic {
+            background-color: #0f172a; /* slate-900 */
+            background-image: 
+                radial-gradient(at 80% 20%, hsla(43, 89%, 61%, 0.25) 0px, transparent 50%),
+                radial-gradient(at 20% 80%, hsla(222, 47%, 11%, 1) 0px, transparent 50%);
+        }
+        #title-slide-graphic::before, #title-slide-graphic::after {
+            content: '';
+            position: absolute;
+            z-index: 1;
+            border-radius: 50%;
+            opacity: 0.15;
+        }
+        #title-slide-graphic::before {
+            width: 120%;
+            height: 120%;
+            top: -60%;
+            left: -10%;
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(251, 191, 36, 0) 60%);
+            transform: rotate(20deg);
+        }
+         #title-slide-graphic::after {
+            width: 150%;
+            height: 150%;
+            bottom: -80%;
+            right: -20%;
+            background: linear-gradient(315deg, rgba(251, 191, 36, 0.15) 0%, rgba(251, 191, 36, 0) 50%);
+            transform: rotate(-30deg);
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 10;
+        }
+        .icon-graphic {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 18rem;
+            position: absolute;
+            color: rgba(251, 191, 36, 0.1);
+            z-index: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            user-select: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 flex flex-col items-center justify-center h-screen overflow-hidden">
+
+    <div id="presentation-container" class="w-full h-full flex flex-col p-4 md:p-8">
+        <!-- Main Slide Area -->
+        <main id="slide-deck" class="flex-grow w-full flex items-center justify-center">
+            
+            <!-- Slide 1: Title -->
+            <div id="title-slide-graphic" class="slide active w-full h-full flex-col items-center justify-center text-center" data-slide="1">
+                <div class="slide-content">
+                    <h1 class="text-5xl md:text-7xl font-extrabold text-white">Why It's Important to Adapt to Actual Changes</h1>
+                    <p class="mt-4 text-2xl text-slate-300">Navigating the New Era of Software Development</p>
+                </div>
+            </div>
+
+            <!-- Slide 2: The Hook (Simplified) -->
+            <div class="slide w-full h-full flex-col items-center justify-center text-center p-8" data-slide="2">
+                <div class="icon-graphic font-mono">&lt;/&gt;</div>
+                <div class="slide-content w-full max-w-4xl space-y-8">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white">The "Almost Right" Problem</h2>
+                    <p class="text-3xl md:text-4xl leading-snug text-slate-200">
+                        When AI gives you code that's <span class="text-amber-400 font-semibold">90% there...</span>
+                    </p>
+                    <p class="text-3xl md:text-4xl leading-snug text-slate-200">
+                        ...but fixing the last <span class="text-red-400 font-semibold">10%</span> takes all the time.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Slide 3: Core Concept 1 -->
+            <div class="slide w-full h-full flex-col items-center justify-center text-center" data-slide="3">
+                 <div class="slide-content w-full">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-12">The Evolution of Interaction</h2>
+                    <div class="flex items-center justify-center space-x-4 md:space-x-8 text-center p-8 bg-slate-800 rounded-2xl shadow-lg max-w-4xl mx-auto">
+                        <div class="text-center">
+                            <div class="text-4xl text-slate-400 mb-2 font-mono">&lt;/&gt;</div>
+                            <p class="text-xl md:text-2xl font-semibold text-slate-400">THEN</p>
+                            <p class="text-lg md:text-2xl text-slate-200 mt-2">Rigid Language Syntax</p>
+                        </div>
+                        <span class="text-amber-400 font-bold text-4xl md:text-6xl">&rarr;</span>
+                        <div class="text-center">
+                            <div class="text-4xl text-amber-400 mb-2">💬</div>
+                            <p class="text-xl md:text-2xl font-semibold text-amber-400">NOW</p>
+                            <p class="font-semibold text-lg md:text-2xl text-white mt-2">Intent-Based Prompting</p>
+                        </div>
+                    </div>
+                    <p class="mt-12 text-xl text-slate-300">The goal is the same, but the method is radically different.</p>
+                 </div>
+            </div>
+
+            <!-- Slide 4: Core Concept 2 -->
+            <div class="slide w-full h-full flex-col items-center justify-center" data-slide="4">
+                <div class="slide-content w-full">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-8 text-center">The Growth of AI Tools</h2>
+                    <div class="chart-container w-full p-4 bg-slate-800 rounded-2xl shadow-lg">
+                        <canvas id="aiToolsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: Core Concept 3 -->
+            <div class="slide w-full h-full flex-col items-center justify-center text-center" data-slide="5">
+                <div class="slide-content">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-12">The Future Role of the Engineer</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center max-w-3xl">
+                        <div class="flex flex-col items-center p-6 bg-slate-800 rounded-lg">
+                            <div class="text-5xl mb-3 text-red-400 font-mono">{}</div>
+                            <p class="text-2xl text-slate-300">Less: <span class="font-semibold text-red-400">"Master of Syntax"</span></p>
+                        </div>
+                        <div class="flex flex-col items-center p-6 bg-slate-800 rounded-lg">
+                             <div class="text-5xl mb-3 text-amber-400">💡</div>
+                            <p class="text-2xl text-slate-300">More: <span class="font-semibold text-amber-400">"Chief Problem Solver"</span></p>
+                        </div>
+                    </div>
+                    <p class="mt-12 text-xl text-slate-300">We are shifting from writing code to defining problems, guiding solutions, and validating results.</p>
+                </div>
+            </div>
+            
+            <!-- Slide 6: The Zinger -->
+            <div class="slide w-full h-full flex-col items-center justify-center text-center p-8" data-slide="6">
+                <div class="icon-graphic">?</div>
+                <div class="slide-content">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-10">The Big Question...</h2>
+                    <div class="p-8 bg-slate-800 rounded-2xl shadow-lg border-2 border-amber-400">
+                        <p class="text-3xl md:text-4xl font-medium text-amber-400">Are we trading the craft of coding for the skill of managing?</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 7: Discussion -->
+            <div class="slide w-full h-full flex-col items-center justify-center" data-slide="7">
+                <div class="slide-content w-full max-w-4xl">
+                    <h2 class="text-5xl md:text-6xl font-bold text-white mb-12 text-center">Let's Discuss</h2>
+                    <ul class="space-y-6 text-xl md:text-2xl text-slate-200">
+                        <li class="flex items-start p-4 bg-slate-800 rounded-lg shadow-sm">
+                            <span class="text-amber-400 mr-4 text-2xl">&rarr;</span>
+                            <span>Will AI fully take over coding, or always need a guide?</span>
+                        </li>
+                        <li class="flex items-start p-4 bg-slate-800 rounded-lg shadow-sm">
+                            <span class="text-amber-400 mr-4 text-2xl">&rarr;</span>
+                            <span>Where has AI helped you the most, or caused the biggest headache?</span>
+                        </li>
+                        <li class="flex items-start p-4 bg-slate-800 rounded-lg shadow-sm">
+                            <span class="text-amber-400 mr-4 text-2xl">&rarr;</span>
+                            <span>If we code less, what skill becomes most critical in the next 5 years?</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Navigation and Progress Bar -->
+        <footer class="w-full max-w-5xl mx-auto pt-4 relative z-10">
+            <div id="progress-bar-container" class="w-full bg-slate-700 rounded-full h-2.5 mb-4">
+                <div id="progress-bar" class="bg-amber-500 h-2.5 rounded-full" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between items-center">
+                <button id="prev-btn" class="px-6 py-2 bg-slate-700 text-slate-100 rounded-lg shadow hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">Previous</button>
+                <span id="slide-counter" class="text-slate-400 font-medium"></span>
+                <button id="next-btn" class="px-6 py-2 bg-amber-500 text-slate-900 font-semibold rounded-lg shadow hover:bg-amber-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">Next</button>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let currentSlide = 1;
+            const slides = document.querySelectorAll('.slide');
+            const totalSlides = slides.length;
+
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const slideCounter = document.getElementById('slide-counter');
+            const progressBar = document.getElementById('progress-bar');
+            let chartInstance = null;
+
+            function showSlide(slideNumber) {
+                slides.forEach(slide => {
+                    slide.classList.remove('active');
+                });
+                
+                const activeSlide = document.querySelector(`.slide[data-slide="${slideNumber}"]`);
+                if (activeSlide) {
+                    activeSlide.classList.add('active');
+                }
+
+                if (slideNumber === 4 && !chartInstance) {
+                    renderChart();
+                }
+
+                updateControls();
+            }
+
+            function updateControls() {
+                slideCounter.textContent = `Slide ${currentSlide} of ${totalSlides}`;
+                progressBar.style.width = `${((currentSlide -1) / (totalSlides - 1)) * 100}%`;
+
+                prevBtn.disabled = (currentSlide === 1);
+                nextBtn.textContent = (currentSlide === totalSlides) ? 'End' : 'Next';
+            }
+
+            prevBtn.addEventListener('click', () => {
+                if (currentSlide > 1) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            });
+
+            nextBtn.addEventListener('click', () => {
+                if (currentSlide < totalSlides) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            });
+            
+            function renderChart() {
+                const ctx = document.getElementById('aiToolsChart').getContext('2d');
+                const textColor = 'rgba(226, 232, 240, 0.8)'; // slate-200
+                const gridColor = 'rgba(71, 85, 105, 0.5)'; // slate-700
+
+                chartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Scope of Task', 'Required Human Input', 'Problem-Solving Autonomy'],
+                        datasets: [{
+                            label: 'Code Assistants (e.g., Basic Copilot)',
+                            data: [3, 8, 2],
+                            backgroundColor: 'rgba(96, 165, 250, 0.7)', // blue-400
+                            borderColor: 'rgba(147, 197, 253, 1)', // blue-300
+                            borderWidth: 2,
+                            borderRadius: 5
+                        }, {
+                            label: 'Autonomous Agents (e.g., Devin)',
+                            data: [8, 3, 9],
+                            backgroundColor: 'rgba(251, 146, 60, 0.7)', // orange-400
+                            borderColor: 'rgba(253, 186, 116, 1)', // orange-300
+                            borderWidth: 2,
+                            borderRadius: 5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: textColor,
+                                    font: { size: 14 }
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Conceptual Capability Comparison (out of 10)',
+                                padding: { bottom: 20 },
+                                font: { size: 18, weight: '600' },
+                                color: textColor
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                max: 10,
+                                grid: {
+                                    color: gridColor,
+                                    borderColor: gridColor
+                                },
+                                ticks: {
+                                    color: textColor,
+                                    font: { size: 14 }
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: textColor,
+                                    font: { size: 14 }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            showSlide(currentSlide);
+        });
+    </script>
+</body>
+</html>
